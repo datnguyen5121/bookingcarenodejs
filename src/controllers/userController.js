@@ -1,4 +1,6 @@
 import userService from "../services/userService";
+import CRUDService from '../services/CRUDService';
+
 let handleLogin = async (req,res) => {
     let email = req.body.email;
     console.log('email: ' + email);
@@ -24,6 +26,48 @@ let handleLogin = async (req,res) => {
 
     })
 }
+let handleGetAllUsers = async (req,res) => {
+    let id = req.query.id; //All,Id
+    if(!id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters',
+            users: []
+        })
+    }
+
+    let users = await userService.getAllUsers(id)
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'OK',
+        users
+    })
+}
+
+let handleCreateNewUser =  async (req,res) => {
+    let message = await userService.createNewUser(req.body)
+    return res.status(200).json(message);
+}
+let handleDeleteNewUser = async (req,res) => {
+    if(!req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: "Missing required parameters!"
+        })
+    }
+    let message = await userService.deleteUser(req.body.id)
+    return res.status(200).json(message);
+}
+let handleEditUser = async(req,res) => {
+    let data = req.body;
+    let message = await userService.updateUserData(data);
+    return res.status(200).json(message)
+ 
+}
 module.exports = {
-    handleLogin: handleLogin
+    handleLogin: handleLogin,
+    handleGetAllUsers: handleGetAllUsers,
+    handleCreateNewUser: handleCreateNewUser,
+    handleEditUser : handleEditUser,
+    handleDeleteNewUser: handleDeleteNewUser
 }
