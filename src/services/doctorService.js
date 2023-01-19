@@ -197,6 +197,11 @@ let getDetailDoctorById = (inputId) => {
                                     as: "paymentTypeData",
                                     attributes: ["valueEn", "valueVi"],
                                 },
+                                {
+                                    model: db.Specialty,
+                                    as: "specialtyTypeData",
+                                    attributes: ["name"],
+                                },
                             ],
                         },
                     ],
